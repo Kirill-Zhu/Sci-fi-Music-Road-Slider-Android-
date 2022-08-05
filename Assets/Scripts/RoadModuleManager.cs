@@ -18,7 +18,9 @@ public class RoadModuleManager : MonoBehaviour
         if(RoadManaager.instance!=null)
         {
             RoadManaager.instance.nextModuleTransform = nextModuleTransform;
-            firstPickUpZone.GetIndex(RoadManaager.instance.bridgeIndex);
+           
+           
+            firstPickUpZone.GetIndex(RoadManaager.instance.bridgeSpawnZoneIndex);
            
         }
         
@@ -26,7 +28,7 @@ public class RoadModuleManager : MonoBehaviour
 
     private void Update()
     {
-        RoadManaager.instance.SetBridgeIndex(LastPickUpZone.spawnIndex);//не передает значение в старте
+        RoadManaager.instance.SetBridgeIndex(LastPickUpZone.spawnIndex);
         transform.Translate(0, 0, -1*speed*Time.deltaTime);
 
         if (transform.position.z<0&&!hasSpawnedNewModule)

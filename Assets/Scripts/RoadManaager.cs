@@ -7,10 +7,14 @@ public class RoadManaager : MonoBehaviour
     private bool _roadIsMove = true;
     public List<GameObject> roadModules;
     public Transform nextModuleTransform;
-    [Tooltip("Links the previous RoadModuleManager whit next RoadModuleManager by their First and Last Pick Up zones")]
-    public int bridgeIndex;
-    [Range(0, 40)]
-    public float speed;
+    [HideInInspector]
+    public int bridgeSpawnZoneIndex=2;
+  
+    public float currentSpeed;
+    [Range(0, 10)]
+    public float minSpeed;
+    [Range(10, 100)]
+    public float maxSpeed;
     private float _tmpSpeed;
 
     public static RoadManaager instance;
@@ -25,16 +29,21 @@ public class RoadManaager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
         #endregion
-        _tmpSpeed = speed;
+        _tmpSpeed = currentSpeed;
         GlobalEventSystem.OnPlayPauseGame += StopMoveRoadSlide;
+        GlobalEventSystem.OnSpeedUp += SpeedUp;
+        GlobalEventSystem.OnSlowDown += SlowDown;
     }
     private void OnDestroy()
     {
         GlobalEventSystem.OnPlayPauseGame -= StopMoveRoadSlide;
+        GlobalEventSystem.OnSpeedUp -= SpeedUp;
+        GlobalEventSystem.OnSlowDown -= SlowDown;
+
     }
     private void Update()
     {
-        RoadModuleManager.ChangeSpeed(speed);
+        RoadModuleManager.ChangeSpeed(currentSpeed);
     }
 
     public void SpawnModule()
@@ -48,7 +57,7 @@ public class RoadManaager : MonoBehaviour
     }
   public void SetBridgeIndex(int spawnIndex)
     {
-        bridgeIndex = spawnIndex;
+        bridgeSpawnZoneIndex = spawnIndex;
     }
     public void StopMoveRoadSlide()
     {
@@ -56,11 +65,21 @@ public class RoadManaager : MonoBehaviour
 
         if (!_roadIsMove)
         {
-            _tmpSpeed = speed;
-            speed = 0;
+            _tmpSpeed = currentSpeed;
+            currentSpeed = 0;
         }
         else
-            speed = _tmpSpeed;
+            currentSpeed = _tmpSpeed;
+    }
+    public void SpeedUp()
+    {
+        if(currentSpeed<maxSpeed)
+        currentSpeed += 0.1f;
+    }
+    public void SlowDown()
+    {
+       if(currentSpeed>minSpeed)
+        currentSpeed -= 0.2f;
     }
 }
 

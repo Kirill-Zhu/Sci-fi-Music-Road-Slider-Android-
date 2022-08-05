@@ -20,8 +20,13 @@ public class PickUpEffect : MonoBehaviour
              
             
             GlobalEventSystem.SendOnShowScore();
+            GlobalEventSystem.SendOnSpeedUp();
             Destroy(gameObject);
         }
      
+    }
+    public void NotPickedUpEffect()
+    {
+        GlobalEventSystem.SendOnSlowDown();
     }
 }

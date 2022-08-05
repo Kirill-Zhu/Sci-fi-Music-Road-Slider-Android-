@@ -25,8 +25,8 @@ public class MusicPlayer : MonoBehaviour
     private void OnDestroy()
     {
         GlobalEventSystem.OnPlayPauseGame -= PlayPauseSong;
-        GlobalEventSystem.OnNextSong = PlayNextSong;
-        GlobalEventSystem.OnPreviousSong = PlayPreviousSong;
+        GlobalEventSystem.OnNextSong -= PlayNextSong;
+        GlobalEventSystem.OnPreviousSong -= PlayPreviousSong;
     }
 
     void Update()
